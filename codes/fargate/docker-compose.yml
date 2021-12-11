@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    image: 803716525692.dkr.ecr.us-east-1.amazonaws.com/application1
+    ports:
+      - "5000:5000"
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: ecs-tp3
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: web
