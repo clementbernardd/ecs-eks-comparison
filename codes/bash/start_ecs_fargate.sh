@@ -26,7 +26,6 @@ function cluster_configuration(){
 
 function create_cluster(){
   show "Create the ECS cluster";
-  # Create a VPC and two public subnets
   ecs-cli up --cluster-config ecs-tp3 --force --ecs-profile ecs-tp3-profile --vpc $vpc_id --subnets $subnet1 $subnet2 --security-group $security_group
 }
 
