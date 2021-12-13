@@ -9,3 +9,6 @@ launch_ecs_fargate :
 
 stop_ecs_fargate :
 	source codes/bash/start_ecs_fargate.sh && clean_up
+
+cost_plot :
+	python3 -m codes.python.cost plot_cost
