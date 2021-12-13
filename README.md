@@ -59,7 +59,7 @@ It will delete the ECS cluster such as the running container inside.
 - To run the EC2 based ECS cluster, one should use the following commands : 
 
 ```shell
-cd codes/terraform && terraform init && terraform apply
+cd codes/ecs-ec2 && terraform init && terraform apply
 ```
 
 It will automatically create and launch the ECS instance. It will output the DNS of the load balancer of the ECS cluster. 
