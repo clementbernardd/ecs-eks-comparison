@@ -2,7 +2,7 @@
 
 RED='\033[0;31m'
 NC='\033[0m'
-
+# Hard coded VPC, subnets and security groups
 vpc_id=vpc-07ebc46cd04431392
 subnet1=subnet-0372f740838e0d8da
 subnet2=subnet-029d19db9862d9f52
@@ -11,7 +11,6 @@ security_group=sg-01a4ada80ecea508a
 function show(){
   echo -e "${RED} $1 ${NC}" ;
 }
-
 
 function attach_task_policy(){
   show "Attach task policy";
