@@ -5,14 +5,14 @@ resource "aws_lb_target_group" "ec2_tg" {
   protocol = "HTTP"
   vpc_id = aws_vpc.ecs-tp3-vpc-terraform.id
   target_type = "instance"
-#  depends_on = [aws_lb.load_balancer]
+  depends_on = [aws_lb.load_balancer]
 }
 
 # Application load balancer
 resource "aws_lb" "load_balancer" {
   name = "ecs-load-balancer"
   load_balancer_type = "application"
-  security_groups = [aws_security_group.ecs-tp3-terraform-sg.id]
+  security_groups = [aws_security_group.ecs-tp3-terraform-alb-sg.id]
   subnets = aws_subnet.public_subnet.*.id
 }
 
@@ -30,7 +30,6 @@ resource "aws_alb_listener" "alb_listener" {
 resource "aws_lb_target_group_attachment" "attachment" {
   target_group_arn = aws_lb_target_group.ec2_tg.arn
   target_id        = aws_instance.ec2-instance-tp3.id
-#  port = 8000
 }
 
 output "alb_dnsname" {

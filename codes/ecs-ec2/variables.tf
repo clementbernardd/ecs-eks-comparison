@@ -16,7 +16,6 @@ variable "vpcidr" {
   default = "192.168.0.0/25"
 }
 
-
 variable "publicidr" {
   description = "Cidr blocks for public subnets"
   type = list

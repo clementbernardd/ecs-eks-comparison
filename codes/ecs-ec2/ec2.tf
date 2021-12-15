@@ -1,13 +1,12 @@
 # Ec2 creation
 resource "aws_instance" "ec2-instance-tp3" {
-  ami                         = "ami-083654bd07b5da81d"
+  ami                         = "ami-0c5c9bcfb36b772fe"
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.public_subnet.0.id
-  associate_public_ip_address = true
+  associate_public_ip_address = false
   key_name                    = "Ecs-tp3"
-#  image_id                  = data.aws_ami.amazon_linux_ecs.id
   iam_instance_profile        = "${aws_iam_instance_profile.ecs_agent.name}"
-  vpc_security_group_ids      = [aws_security_group.ecs-tp3-terraform-sg.id]
+  vpc_security_group_ids      = [aws_security_group.ecs-tp3-terraform-ec2-sg.id]
   connection {
     type        = "ssh"
     host        = self.public_ip
@@ -16,23 +15,7 @@ resource "aws_instance" "ec2-instance-tp3" {
     timeout     = "4m"
   }
   user_data                   = "${file("user_data.sh")}"
-#  "${data.template_file.user_data.rendered}"
-
 }
-
-
-data "template_file" "user_data"{
-  template = "${file("${path.module}/user_data.sh")}"
-}
-
-#data "aws_ami" "ecs_optimized" {
-#
-#  filter {
-#    name   = "name"
-#    values = ["amzn-ami-2017.09.l-amazon-ecs-optimized"]
-#  }
-#}
-
 
 resource "aws_iam_role" "ecs_agent" {
   name               = "ecs-agent"
@@ -62,19 +45,19 @@ resource "aws_iam_instance_profile" "ecs_agent" {
   role = "${aws_iam_role.ecs_agent.name}"
 }
 
-
-data "aws_ami" "amazon_linux_ecs" {
-  most_recent = true
-
-  owners = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["amzn-ami-*-amazon-ecs-optimized"]
-  }
-
-  filter {
-    name   = "owner-alias"
-    values = ["amazon"]
-  }
-}
+#
+#data "aws_ami" "amazon_linux_ecs" {
+#  most_recent = true
+#
+#  owners = ["amazon"]
+#
+#  filter {
+#    name   = "name"
+#    values = ["amzn-ami-*-amazon-ecs-optimized"]
+#  }
+#
+#  filter {
+#    name   = "owner-alias"
+#    values = ["amazon"]
+#  }
+#}
