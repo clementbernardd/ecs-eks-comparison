@@ -44,20 +44,3 @@ resource "aws_iam_instance_profile" "ecs_agent" {
   name = "ecs-agent"
   role = "${aws_iam_role.ecs_agent.name}"
 }
-
-#
-#data "aws_ami" "amazon_linux_ecs" {
-#  most_recent = true
-#
-#  owners = ["amazon"]
-#
-#  filter {
-#    name   = "name"
-#    values = ["amzn-ami-*-amazon-ecs-optimized"]
-#  }
-#
-#  filter {
-#    name   = "owner-alias"
-#    values = ["amazon"]
-#  }
-#}
