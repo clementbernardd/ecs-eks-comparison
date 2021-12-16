@@ -1,7 +1,7 @@
 # Target group
 resource "aws_lb_target_group" "ec2_tg" {
   name = "Ec2-target-group"
-  port = 80
+  port = 8080
   protocol = "HTTP"
   vpc_id = aws_vpc.ecs-tp3-vpc-terraform.id
   target_type = "instance"
