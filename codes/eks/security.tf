@@ -1,38 +1,83 @@
-resource "aws_security_group" "worker_group" {
-  name_prefix = "worker_group"
-  vpc_id = module.vpc.vpc_id
 
+resource "aws_security_group" "alb-sg" {
+  name        = "alb-sg"
+  description = "Allow traffic"
+  vpc_id      = aws_vpc.eks-tp3-vpc-terraform.id
   ingress {
-    from_port = 22
-    protocol  = "tcp"
-    to_port   = 22
-    cidr_blocks = ["10.0.0.0/8"]
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "eks-cluster-sg" {
+  name        = "eks-cluster-sg"
+  description = "Allow traffic between EKS nodes and API"
+  vpc_id      = aws_vpc.eks-tp3-vpc-terraform.id
+  ingress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    security_groups = [aws_security_group.eks-nodes-self.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
 
-resource "aws_security_group" "worker_group_two" {
-  name_prefix = "worker_group_two"
-  vpc_id = module.vpc.vpc_id
+# EKS nodes internal communication
+resource "aws_security_group" "eks-nodes-self" {
+  name        = "eks-nodes-sg"
+  vpc_id      = aws_vpc.eks-tp3-vpc-terraform.id
 
   ingress {
-    from_port = 22
-    protocol  = "tcp"
-    to_port   = 22
-    cidr_blocks = ["10.0.0.0/8"]
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    self      = true # Allow communication between nodes
   }
-}
 
-resource "aws_security_group" "all_worker_group" {
-  name_prefix = "all_worker_group"
-  vpc_id = module.vpc.vpc_id
-
-  ingress {
-    from_port = 22
-    protocol  = "tcp"
-    to_port   = 22
-    cidr_blocks = ["10.0.0.0/8"]
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
+
 }
 
 
+# EKS nodes communication from master
+resource "aws_security_group" "eks-nodes-from-master" {
+  name        = "eks-nodes-from-master-"
+  vpc_id      = aws_vpc.eks-tp3-vpc-terraform.id
+
+
+  ingress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    security_groups = [aws_security_group.eks-nodes-self.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+}

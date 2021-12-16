@@ -1,6 +1,5 @@
-output "cluster_id" {
-  value = module.eks.cluster_id
+output "kubernetes_config" {
+  value       = local.kubernetes_config
+  description = "generic kubernetes configuration"
 }
-output "cluster_endpoint"{
-  value = module.eks.cluster_endpoint
-}
+

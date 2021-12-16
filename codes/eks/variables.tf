@@ -1,12 +1,31 @@
-variable "region" {
-    default = "us-east-1"
+variable "cluster_name" {
+  description = "Name of the EKS cluster, usually 'knife' or 'spoon'"
+  type        = string
+  default = "Eks-test"
 }
-data "aws_availability_zones" "available" {}
+
+variable "region" {
+  default     = "us-east-1"
+  description = "Region where are created the objects"
+}
+
+variable "azs" {
+  description = "Availability zones"
+  type = list
+  default = ["us-east-1a","us-east-1b"]
+
+}
 
 variable "vpcidr" {
-    default = "10.0.0.0/16"
+  description = "Cidr block for VPC"
+  type = string
+  default = "192.168.0.0/25"
 }
 
-variable "subnetid" {
-    default = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+variable "publicidr" {
+  description = "Cidr blocks for public subnets"
+  type = list
+  default = ["192.168.0.64/27","192.168.0.96/27"]
+
 }
+
