@@ -74,6 +74,27 @@ terraform destroy
 Don't forget to confirm the command with a `yes` in the terminal (terraform syntax). 
 
 
+## EKS using terraform 
+
+- To run the EKS cluster, one should use the following commands : 
+
+```shell
+cd codes/eks && terraform init && terraform apply
+```
+
+It will launch the EKS cluster (taks about 15 minutes), then outputs the Kubernetes configuration and the Load Balancer DNS. 
+
+Copy paste the DNS to a browser to see the application running. 
+
+- To stop the service, use : 
+
+```shell
+terraform destroy
+```
+
+
+
+
 ## Results 
 
 To show the plot bar of the comparison of prices between ECS and EKS cluster, use : 
