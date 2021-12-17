@@ -31,9 +31,8 @@ resource "aws_security_group" "ecs-tp3-terraform-alb-sg" {
     from_port = 0
     protocol  = "-1"
     to_port   = 0
-    cidr_blocks = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-#    security_groups = [aws_security_group.ecs-tp3-terraform-ec2-sg.id]
+    security_groups = [aws_security_group.ecs-tp3-terraform-ec2-sg.id]
   }
 
 

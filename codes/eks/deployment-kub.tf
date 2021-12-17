@@ -1,4 +1,3 @@
-
 # Deployment of the container
 resource "kubernetes_deployment_v1" "app-staging-deployment" {
   metadata {
