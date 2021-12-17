@@ -45,7 +45,7 @@ resource "kubernetes_deployment_v1" "app-staging-deployment" {
           }
           liveness_probe {
             http_get {
-              path = "/nginx_status"
+              path = "/"
               port = 80
             }
           }

@@ -12,7 +12,7 @@ resource "aws_lb_target_group" "ec2_tg" {
 resource "aws_lb" "load_balancer" {
   name = "eks-load-balancer"
   load_balancer_type = "application"
-  security_groups = [aws_security_group.alb-sg.id]
+  security_groups = [aws_security_group.alb-sg.id, aws_security_group.eks-nodes-sg.id]
   subnets = aws_subnet.public_subnet.*.id
 }
 

@@ -1,5 +1,5 @@
 variable "cluster_name" {
-  description = "Name of the EKS cluster, usually 'knife' or 'spoon'"
+  description = "Name of the EKS cluster"
   type        = string
   default = "Eks-test"
 }

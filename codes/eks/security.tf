@@ -4,9 +4,9 @@ resource "aws_security_group" "alb-sg" {
   description = "Allow traffic"
   vpc_id      = aws_vpc.eks-tp3-vpc-terraform.id
   ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -26,7 +26,7 @@ resource "aws_security_group" "eks-cluster-sg" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    security_groups = [aws_security_group.eks-nodes-self.id]
+    security_groups = [aws_security_group.eks-nodes-sg.id]
   }
 
   egress {
@@ -39,7 +39,7 @@ resource "aws_security_group" "eks-cluster-sg" {
 
 
 # EKS nodes internal communication
-resource "aws_security_group" "eks-nodes-self" {
+resource "aws_security_group" "eks-nodes-sg" {
   name        = "eks-nodes-sg"
   vpc_id      = aws_vpc.eks-tp3-vpc-terraform.id
 
@@ -65,12 +65,11 @@ resource "aws_security_group" "eks-nodes-from-master" {
   name        = "eks-nodes-from-master-"
   vpc_id      = aws_vpc.eks-tp3-vpc-terraform.id
 
-
   ingress {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    security_groups = [aws_security_group.eks-nodes-self.id]
+    security_groups = [aws_security_group.eks-nodes-sg.id]
   }
 
   egress {

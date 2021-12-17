@@ -3,29 +3,10 @@ locals {
   eks-nodes-userdata = <<USERDATA
 #!/bin/bash
 set -o xtrace
-/etc/eks/bootstrap.sh --apiserver-endpoint '${aws_eks_cluster.this.endpoint}' --b64-cluster-ca '${aws_eks_cluster.this.certificate_authority[0].data}' '${var.cluster_name}'
+/etc/eks/bootstrap.sh --apiserver-endpoint '${aws_eks_cluster.eks-tp3-cluster.endpoint}' --b64-cluster-ca '${aws_eks_cluster.eks-tp3-cluster.certificate_authority[0].data}' '${var.cluster_name}'
 USERDATA
 }
 
-resource "aws_security_group" "self" {
-  name        = "eks-nodes-ec2"
-  vpc_id      = "${aws_vpc.eks-tp3-vpc-terraform.id}"
-
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-}
 
 resource "aws_instance" "ec2-instance-tp3" {
   ami                         = "ami-019904275ee6b71a3"
@@ -34,7 +15,7 @@ resource "aws_instance" "ec2-instance-tp3" {
   associate_public_ip_address = true
   key_name                    = "Ecs-tp3"
   iam_instance_profile        = "${aws_iam_instance_profile.eks-nodes-instance-profile.name}"
-  vpc_security_group_ids      = [aws_security_group.self.id, aws_security_group.eks-nodes-self.id, aws_security_group.eks-nodes-from-master.id]
+  vpc_security_group_ids      = [aws_security_group.eks-nodes-sg.id, aws_security_group.eks-cluster-sg.id, aws_security_group.eks-nodes-from-master.id]
   connection {
     type        = "ssh"
     host        = self.public_ip
